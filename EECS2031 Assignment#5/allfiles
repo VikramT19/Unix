@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+for file in * # Loops through directory
+do
+  if [[ -f $file ]] # If it's a file
+  then
+    echo "$file" # Outputs file
+  fi
+done

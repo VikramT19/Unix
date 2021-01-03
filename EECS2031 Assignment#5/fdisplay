@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+read -p "Enter input file name: " file  # Gets input file
+if [[ -f "$file" ]] # Checks if file exists
+then
+  if [[ -r "$file" ]] # Checks if file is readable
+  then
+    read -p "Enter option (e, p, f, l)? " option # Gets option
+    while [ "$option" != "e" ] && [ "$option" != "E" ] && [ "$option" != "p" ] && [ "$option" != "P" ] && [ "$option" != "f" ] && [ "$option" != "F" ] && [ "$option" != "l" ] && [ "$option" != "L" ] # Loops until one of the options is chosen
+    do
+      echo "Invalid option" # Error message
+      read -p "Enter option (e, p, f, l)? " option # Message is repeated
+    done
+    if [ "$option" = "e" ] || [ "$option" = "E" ] # If entire file option is chosen
+    then
+      cat $file # Outputs entire file content
+    elif [ "$option" = "p" ] || [ "$option" = "P" ] # If page option is chosen
+    then
+      more $file # Outputs file content by page
+    elif [ "$option" = "f" ] || [ "$option" = "F" ] # If first 10 lines option is chosen
+    then
+      head -10 $file # Outputs first 10 lines
+    elif [ "$option" = "l" ] || [ "$option" = "L" ] # If last 10 lines option is chosen
+    then
+      tail -10 $file # Outputs last 10 lines
+    fi
+  else
+    echo "File '$file' is not readable." # Message indicating file is not readable
+  fi
+else
+  echo "File '$file' does not exist." # Message indicating file does not exist
+fi

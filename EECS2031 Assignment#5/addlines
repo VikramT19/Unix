@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+counter=1 # Counter of number of line
+
+read -p "Enter input file name: " input # Gets input file
+if [[ -f "$input" ]] # Checks if input file exists
+then
+  if [[ -r "$input" ]] # Checks if input file is readable
+  then
+    read -p "Enter output file name: " output # Gets output file
+    if [[ -f "$output" ]] # Checks if output file exists
+    then
+      if [[ -w "$output" ]] # Checks if output file is writable
+      then
+        echo "File '$output' exists." # Message indicating file exists
+        read -p "Append to it (y/n)? " choice # Gets option from user
+        while [ "$choice" != "y" ] && [ "$choice" != "Y" ] && [ "$choice" != "n" ] && [ "$choice" != "N" ] # Loops until option is chosen
+        do
+          echo "Invalid option" # Error Message
+          read -p "Append to it (y/n)? " choice # Message is repeated
+        done
+        if [[ "$choice" = "y" ]] || [[ "$choice" = "Y" ]] # If yes is entered
+        then
+          while IFS= read -r line # Reads file
+          do
+            echo $counter: $line >> $output # Appends line with the number of line
+            counter=$(( counter + 1 )) # Counter is incremented
+          done < "$input" # End of file reading
+        elif [[ "$choice" = "n" ]] || [[ "$choice" = "N" ]] # If no is entered
+        then
+          exit 1 # Exits program
+        fi
+      else
+        echo "File '$output' is not writable." # Message indicating file is not writable
+      fi
+    else
+      touch $output # If file does not exists, it creates one
+    fi
+  else
+    echo "File '$input' is not readable." # Indicating file is not readable
+  fi
+else
+  echo "File '$input' does not exist." # Indicating file does not exist
+fi

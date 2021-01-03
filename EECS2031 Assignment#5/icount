@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+read -p "Enter input file name: " file # Gets input file
+if [[ -f "$file" ]] # Checks if file exists
+then
+  if [[ -r "$file" ]] # Checks if file is readable
+  then
+    read -p "Count lines, words, characters or all three (l, m, c, a)? " option # Gets option
+    while [ "$option" != "l" ] && [ "$option" != "m" ] && [ "$option" != "c" ] && [ "$option" != "a" ] && [ "$option" != "L" ] && [ "$option" != "M" ] && [ "$option" != "C" ] && [ "$option" != "A" ] # Loops until one of the option is chosen
+    do
+      echo "Invalid option" # Error message is thrown
+      read -p "Count lines, words, characters or all three (l, m, c, a)? " option # Message is repeated
+    done
+    if [ "$option" = "l" ] || [ "$option" = "L" ] # If user chooses number of lines option
+    then
+      lines=$(wc -l < "$file") # Gets number of lines
+      echo "File '$file' contains "$lines" lines." # Output message
+    elif [ "$option" = "m" ] || [ "$option" = "M" ] # If user chooses number of words option
+    then
+      words=$(wc -w < "$file") # Gets number of words
+      echo "File '$file' contains "$words" words." # Output message
+    elif [ "$option" = "c" ] || [ "$option" = "C" ] # If user chooses number of characters option
+    then
+      characters=$(wc -c < "$file") # Gets number of characters
+      echo "File '$file' contains "$characters" characters." # Output message
+    elif [ "$option" = "a" ] || [ "$option" = "A" ] # If user chooses all option
+    then
+      words=$(wc -w < "$file") # Number of words
+      characters=$(wc -c < "$file") # Number of characters
+      lines=$(wc -l < "$file") # Number of lines
+      echo "File '$file' contains "$lines" lines, "$words" words, "$characters" characters." # Output message
+    fi
+  else
+    echo "File '$file' is not readable." # Message is file is not readable
+  fi
+else
+  echo "File '$file' does not exist." # Message if file does not exist
+fi
